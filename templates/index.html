@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Sensor Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Public Sensor Data</h1>
+    <table border="1" id="data-table">
+        <tr><th>Parameter</th><th>Value</th></tr>
+        {% for key, value in data.items() %}
+        <tr>
+            <td>{{ key }}</td>
+            <td id="{{ key }}">{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function fetchLatestData() {
+            $.getJSON('/latest_data', function(data) {
+                for (const [key, value] of Object.entries(data)) {
+                    $("#" + key).text(value); // Update the value in the table
+                }
+            });
+        }
+
+        // Fetch new data every second
+        setInterval(fetchLatestData, 1000);
+    </script>
+</body>
+</html>
